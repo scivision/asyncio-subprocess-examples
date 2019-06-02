@@ -12,10 +12,12 @@ python:
 - 3.6
 - 3.5
 
+env: FC=gfortran
+
 addons:
   apt:
     packages:
-    - gfortran-8
+    - gfortran
 
 matrix:
   include:
