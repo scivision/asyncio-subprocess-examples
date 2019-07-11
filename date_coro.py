@@ -11,8 +11,19 @@ from argparse import ArgumentParser
 from asyncio_subprocess_examples.runner import runner
 
 
+async def coro_gather(N: int):
+    """
+    this also works, but waits till all done to give output
+    """
+    futures = [get_date() for _ in range(N)]
+    times = await asyncio.gather(*futures)
+    print("\n".join(times))
+
+
 async def coro(N: int):
-    return await asyncio.gather(*[get_date() for _ in range(N)])
+    futures = [get_date() for _ in range(N)]
+    for t in asyncio.as_completed(futures):
+        print("{}".format(await t))
 
 
 async def get_date() -> str:
@@ -39,5 +50,9 @@ if __name__ == "__main__":
     P = p.parse_args()
 
     tic = time.monotonic()
-    result = runner(coro, P.N)
-    print("{}\n in {:.3f} seconds".format("\n".join(result), time.monotonic() - tic))
+    runner(coro, P.N)
+    print("asyncio.as_completed in {:.3f} seconds".format(time.monotonic() - tic))
+
+    tic = time.monotonic()
+    runner(coro_gather, P.N)
+    print("asyncio.gather in {:.3f} seconds".format(time.monotonic() - tic))
