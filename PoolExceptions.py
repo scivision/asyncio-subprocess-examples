@@ -26,16 +26,16 @@ def timestwo(number: int) -> int:
     err = number * 2
 
     if err == 8:
-        raise RuntimeError('The evil value {} has been reached'.format(err))
+        raise RuntimeError("The evil value {} has been reached".format(err))
 
     return err
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     numbers = range(1, 5)
 
     num2 = main(numbers)
 
     for n in num2:
         if n == 6:
-            print('next comes an exception')
+            print("next comes an exception")
