@@ -29,9 +29,7 @@ async def coro(N: int):
 async def get_date() -> str:
     code = "import datetime; print(datetime.datetime.now())"
 
-    proc = await asyncio.create_subprocess_exec(
-        sys.executable, "-c", code, stdout=asyncio.subprocess.PIPE
-    )
+    proc = await asyncio.create_subprocess_exec(sys.executable, "-c", code, stdout=asyncio.subprocess.PIPE)
 
     # Read one line of output.
     data = await proc.stdout.readline()
@@ -44,15 +42,15 @@ async def get_date() -> str:
 
 if __name__ == "__main__":
     p = ArgumentParser()
-    p.add_argument(
-        "N", help="number of times to print", nargs="?", type=int, default=15
-    )
+    p.add_argument("N", help="number of times to print", nargs="?", type=int, default=15)
     P = p.parse_args()
 
     tic = time.monotonic()
     runner(coro, P.N)
-    print("asyncio.as_completed in {:.3f} seconds".format(time.monotonic() - tic))
+    toc = time.monotonic()
+    print("asyncio.as_completed in {:.3f} seconds".format(toc - tic))
 
     tic = time.monotonic()
     runner(coro_gather, P.N)
-    print("asyncio.gather in {:.3f} seconds".format(time.monotonic() - tic))
+    toc = time.monotonic()
+    print("asyncio.gather in {:.3f} seconds".format(toc - tic))

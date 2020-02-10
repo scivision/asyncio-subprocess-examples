@@ -1,13 +1,12 @@
 language: python
 group: travis_latest
-dist: xenial
 
 git:
   depth: 25
   quiet: true
 
 python:
-- 3.8-dev
+- 3.8
 - 3.7
 - 3.6
 - 3.5
@@ -30,4 +29,4 @@ matrix:
 
 install: pip install -e .[tests]
 
-script: pytest -v
+script: pytest
