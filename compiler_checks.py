@@ -1,7 +1,4 @@
-#!/usr/bin/env python
-"""
-Python >= 3.5
-"""
+#!/usr/bin/env python3
 import sys
 import shutil
 import os
@@ -12,7 +9,8 @@ from argparse import ArgumentParser
 import typing
 import tempfile
 import time
-from asyncio_subprocess_examples.runner import runner
+
+import asyncio_subprocess_examples  # noqa: F401
 
 
 def fortran_test_generator() -> typing.Dict[str, str]:
@@ -60,7 +58,7 @@ async def fortran_compiler_ok(compiler: str, name: str, src: str, verbose: bool 
     with tempfile.NamedTemporaryFile("w", suffix=".f90", delete=False) as f:
         f.write(src)
 
-    logging.debug("testing {} with source: {}".format(compiler, src))
+    logging.debug(f"testing {compiler} with source: {src}")
     cmd = [compiler, f.name]
     # print(' '.join(cmd))
     proc = await asyncio.create_subprocess_exec(*cmd, stdout=asyncio.subprocess.PIPE, stderr=asyncio.subprocess.PIPE)
@@ -83,7 +81,7 @@ def fortran_compiler_ok_sync(compiler: str, name: str, src: str) -> typing.Tuple
     with tempfile.NamedTemporaryFile("w", suffix=".f90", delete=False) as f:
         f.write(src)
 
-    logging.debug("testing {} with source: {}".format(compiler, src))
+    logging.debug(f"testing {compiler} with source: {src}")
     cmd = [compiler, f.name]
     ret = subprocess.run(cmd, stderr=subprocess.DEVNULL)
 
@@ -98,9 +96,9 @@ def main(compiler: str, Nrun: int, verbose: bool):
         raise FileNotFoundError(compiler)
     # %% asynch time
     tic = time.monotonic()
-    check_results = runner(arbiter, compiler, Nrun, verbose)
+    check_results = asyncio.run(arbiter(compiler, Nrun, verbose))
     toc = time.monotonic()
-    print("{:.3f} seconds to compile asyncio".format(toc - tic))
+    print(f"{toc - tic:.3f} seconds to compile asyncio")
     # %% synch time
     tic = time.monotonic()
     results = []
@@ -110,7 +108,7 @@ def main(compiler: str, Nrun: int, verbose: bool):
     results_sync = dict(results)
     toc = time.monotonic()
 
-    print("{:.3f} seconds to compile synchronous".format(toc - tic))
+    print(f"{toc-tic:.3f} seconds to compile synchronous")
 
     if sys.version_info >= (3, 6):
         assert results_sync == check_results

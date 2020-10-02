@@ -1,14 +1,14 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 """
 in general, the times printed may be out of order due to concurrent operations
-
-Python >= 3.5
 """
+
 import asyncio
 import sys
 import time
 from argparse import ArgumentParser
-from asyncio_subprocess_examples.runner import runner
+
+import asyncio_subprocess_examples  # noqa: F401
 
 
 async def coro_gather(N: int):
@@ -23,7 +23,7 @@ async def coro_gather(N: int):
 async def coro(N: int):
     futures = [get_date() for _ in range(N)]
     for t in asyncio.as_completed(futures):
-        print("{}".format(await t))
+        print(f"{await t}")
 
 
 async def get_date() -> str:
@@ -46,11 +46,11 @@ if __name__ == "__main__":
     P = p.parse_args()
 
     tic = time.monotonic()
-    runner(coro, P.N)
+    asyncio.run(coro(P.N))
     toc = time.monotonic()
-    print("asyncio.as_completed in {:.3f} seconds".format(toc - tic))
+    print(f"asyncio.as_completed in {toc - tic:.3f} seconds")
 
     tic = time.monotonic()
-    runner(coro_gather, P.N)
+    asyncio.run(coro_gather(P.N))
     toc = time.monotonic()
-    print("asyncio.gather in {:.3f} seconds".format(toc - tic))
+    print(f"asyncio.gather in {toc - tic:.3f} seconds")

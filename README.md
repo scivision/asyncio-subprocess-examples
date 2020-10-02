@@ -1,5 +1,3 @@
-[![Build Status](https://travis-ci.com/scivision/asyncio-subprocess-examples.svg?branch=master)](https://travis-ci.com/scivision/asyncio-subprocess-examples)
-
 # Python asyncio subprocess Examples
 
 Examples of speedup from Python asyncio-subprocess.

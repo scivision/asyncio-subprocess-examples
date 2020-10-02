@@ -1,10 +1,11 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 """
 Errors are raised with .map of ProcessPoolExecutor or ThreadPoolExecutor only when retrieving the result,
 as per docs:
 https://docs.python.org/3/library/concurrent.futures.html
 
 """
+
 import concurrent.futures
 from typing import Iterator
 import os
