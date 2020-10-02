@@ -1,5 +1,7 @@
 # Python asyncio subprocess Examples
 
+![Actions Status](https://github.com/scivision/asyncio-subprocess-examples/workflows/ci/badge.svg)
+
 Examples of speedup from Python asyncio-subprocess.
 
 The first example is that of running compiler tests asynchronously, as would possibly be useful for build systems such as Meson.

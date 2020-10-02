@@ -3,7 +3,6 @@
 Errors are raised with .map of ProcessPoolExecutor or ThreadPoolExecutor only when retrieving the result,
 as per docs:
 https://docs.python.org/3/library/concurrent.futures.html
-
 """
 
 import concurrent.futures
@@ -27,7 +26,7 @@ def timestwo(number: int) -> int:
     err = number * 2
 
     if err == 8:
-        raise RuntimeError("The evil value {} has been reached".format(err))
+        raise RuntimeError(f"The evil value {err} has been reached")
 
     return err
 
