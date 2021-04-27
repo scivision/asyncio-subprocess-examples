@@ -1,8 +1,9 @@
 import asyncio
+import os
 
 import asyncio_subprocess_examples as ase
 
-COMPILER = "gfortran"
+COMPILER = os.environ.get("FC", "gfortran")
 
 
 def test_asyncio():
