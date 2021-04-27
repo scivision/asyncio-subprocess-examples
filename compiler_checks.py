@@ -39,10 +39,15 @@ def main(compiler: str, Nrun: int, verbose: bool):
 if __name__ == "__main__":
     p = ArgumentParser(description="demo of asyncio compiler checks")
     p.add_argument(
-        "compiler", help="name of compiler executable, e.g. clang gcc flang gfortran ifort",
+        "compiler",
+        help="name of compiler executable, e.g. clang gcc flang gfortran ifort",
     )
     p.add_argument(
-        "-n", "--Nrun", help="number of times to run test (benchmarking)", type=int, default=1,
+        "-n",
+        "--Nrun",
+        help="number of times to run test (benchmarking)",
+        type=int,
+        default=1,
     )
     p.add_argument("-v", "--verbose", action="store_true")
     P = p.parse_args()

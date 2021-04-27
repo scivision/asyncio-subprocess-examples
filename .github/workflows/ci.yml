@@ -19,7 +19,7 @@ jobs:
     - run: pip install .[tests,lint]
 
     - run: flake8
-    - run: mypy . src
+    - run: mypy
 
     - run: pytest
 
@@ -33,9 +33,10 @@ jobs:
         python-version: '3.x'
 
     - run: pip install .[tests]
-    - run: brew install gcc
 
     - run: pytest
+      env:
+        FC: gfortran-10
 
   windows:
     runs-on: windows-latest

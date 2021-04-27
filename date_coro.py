@@ -29,7 +29,9 @@ async def coro(N: int):
 async def get_date() -> str:
     code = "import datetime; print(datetime.datetime.now())"
 
-    proc = await asyncio.create_subprocess_exec(sys.executable, "-c", code, stdout=asyncio.subprocess.PIPE)
+    proc = await asyncio.create_subprocess_exec(
+        sys.executable, "-c", code, stdout=asyncio.subprocess.PIPE
+    )
 
     # Read one line of output.
     data = await proc.stdout.readline()

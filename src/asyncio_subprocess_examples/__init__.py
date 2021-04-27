@@ -49,8 +49,10 @@ async def arbiter(compiler: str, Nrun: int, verbose: bool) -> typing.Dict[str, b
     return dict(results)
 
 
-async def fortran_compiler_ok(compiler: str, name: str, src: str, verbose: bool = False) -> typing.Tuple[str, bool]:
-    """ check that Fortran compiler is able to compile a basic program """
+async def fortran_compiler_ok(
+    compiler: str, name: str, src: str, verbose: bool = False
+) -> typing.Tuple[str, bool]:
+    """check that Fortran compiler is able to compile a basic program"""
 
     with tempfile.NamedTemporaryFile("w", suffix=".f90", delete=False) as f:
         f.write(src)
@@ -58,7 +60,9 @@ async def fortran_compiler_ok(compiler: str, name: str, src: str, verbose: bool 
     logging.debug(f"testing {compiler} with source: {src}")
     cmd = [compiler, f.name]
     # print(' '.join(cmd))
-    proc = await asyncio.create_subprocess_exec(*cmd, stdout=asyncio.subprocess.PIPE, stderr=asyncio.subprocess.PIPE)
+    proc = await asyncio.create_subprocess_exec(
+        *cmd, stdout=asyncio.subprocess.PIPE, stderr=asyncio.subprocess.PIPE
+    )
 
     stdout, stderr = await proc.communicate()
     # this and delete=False is necessary due to Windows no double-open file limitation
@@ -73,7 +77,7 @@ async def fortran_compiler_ok(compiler: str, name: str, src: str, verbose: bool 
 
 
 def fortran_compiler_ok_sync(compiler: str, name: str, src: str) -> typing.Tuple[str, bool]:
-    """ check that Fortran compiler is able to compile a basic program """
+    """check that Fortran compiler is able to compile a basic program"""
 
     with tempfile.NamedTemporaryFile("w", suffix=".f90", delete=False) as f:
         f.write(src)
