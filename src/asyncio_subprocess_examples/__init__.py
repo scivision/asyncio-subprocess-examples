@@ -1,8 +1,8 @@
+from __future__ import annotations
 import os
 import asyncio
 import subprocess
 import logging
-import typing
 import tempfile
 import sys
 
@@ -10,7 +10,7 @@ if os.name == "nt":
     asyncio.set_event_loop_policy(asyncio.WindowsProactorEventLoopPolicy())  # type: ignore
 
 
-def fortran_test_generator() -> typing.Dict[str, str]:
+def fortran_test_generator() -> dict[str, str]:
     """
     provides simple code block elements to test compiler feature level
     """
@@ -29,7 +29,7 @@ def fortran_test_generator() -> typing.Dict[str, str]:
     return tests
 
 
-async def arbiter(compiler: str, Nrun: int, verbose: bool) -> typing.Dict[str, bool]:
+async def arbiter(compiler: str, Nrun: int, verbose: bool) -> dict[str, bool]:
     """
     example tests for compilers
 
@@ -51,7 +51,7 @@ async def arbiter(compiler: str, Nrun: int, verbose: bool) -> typing.Dict[str, b
 
 async def fortran_compiler_ok(
     compiler: str, name: str, src: str, verbose: bool = False
-) -> typing.Tuple[str, bool]:
+) -> tuple[str, bool]:
     """check that Fortran compiler is able to compile a basic program"""
 
     with tempfile.NamedTemporaryFile("w", suffix=".f90", delete=False) as f:
@@ -76,7 +76,7 @@ async def fortran_compiler_ok(
     return name, proc.returncode == 0
 
 
-def fortran_compiler_ok_sync(compiler: str, name: str, src: str) -> typing.Tuple[str, bool]:
+def fortran_compiler_ok_sync(compiler: str, name: str, src: str) -> tuple[str, bool]:
     """check that Fortran compiler is able to compile a basic program"""
 
     with tempfile.NamedTemporaryFile("w", suffix=".f90", delete=False) as f:
