@@ -4,50 +4,29 @@ on: [push, pull_request]
 
 jobs:
 
-  lint:
-    runs-on: ubuntu-latest
+  core:
+    runs-on: ${{ matrix.os }}
+
     strategy:
       matrix:
+        os: [ubuntu-latest, macos-latest]
         python-version: ['3.x']
 
     steps:
-    - uses: actions/checkout@v2
-    - uses: actions/setup-python@v2
+
+    - uses: actions/checkout@v3
+
+    - uses: actions/setup-python@v4
       with:
         python-version: ${{ matrix.python-version }}
 
     - run: pip install .[tests,lint]
 
+    - name: "install GCC (macos)"
+      if: runner.os == 'macOS'
+      run: brew reinstall gcc
+
     - run: flake8
     - run: mypy
-
-    - run: pytest
-
-
-  macos:
-    runs-on: macos-latest
-    steps:
-    - uses: actions/checkout@v2
-    - uses: actions/setup-python@v2
-      with:
-        python-version: '3.x'
-
-    - run: pip install .[tests]
-
-    - run: pytest
-      env:
-        FC: gfortran-10
-
-  windows:
-    runs-on: windows-latest
-    steps:
-    - uses: actions/checkout@v2
-    - uses: actions/setup-python@v2
-      with:
-        python-version: '3.x'
-
-    - run: pip install .[tests]
-
-    - run: cinst -y ffmpeg
 
     - run: pytest
