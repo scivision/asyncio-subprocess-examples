@@ -6,9 +6,6 @@ import logging
 import tempfile
 import sys
 
-if os.name == "nt":
-    asyncio.set_event_loop_policy(asyncio.WindowsProactorEventLoopPolicy())  # type: ignore
-
 
 def fortran_test_generator() -> dict[str, str]:
     """
