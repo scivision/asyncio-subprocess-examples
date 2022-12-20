@@ -8,10 +8,9 @@ import time
 import asyncio_subprocess_examples as ase
 
 
-def main(compiler: str, Nrun: int, verbose: bool):
-    exe = shutil.which(compiler)
-    if not exe:
-        raise FileNotFoundError(compiler)
+def main(name: str, Nrun: int, verbose: bool):
+    if not (exe := shutil.which(name)):
+        raise FileNotFoundError(name)
     # %% asynch time
     tic = time.monotonic()
     check_results = asyncio.run(ase.arbiter(exe, Nrun, verbose))
