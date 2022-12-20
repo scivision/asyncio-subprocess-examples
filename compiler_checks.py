@@ -9,11 +9,12 @@ import asyncio_subprocess_examples as ase
 
 
 def main(compiler: str, Nrun: int, verbose: bool):
-    if not shutil.which(compiler):
+    exe = shutil.which(compiler)
+    if not exe:
         raise FileNotFoundError(compiler)
     # %% asynch time
     tic = time.monotonic()
-    check_results = asyncio.run(ase.arbiter(compiler, Nrun, verbose))
+    check_results = asyncio.run(ase.arbiter(exe, Nrun, verbose))
     toc = time.monotonic()
     print(f"{toc - tic:.3f} seconds to compile asyncio")
     # %% synch time
@@ -21,7 +22,7 @@ def main(compiler: str, Nrun: int, verbose: bool):
     results = []
     for _ in range(Nrun):  # just to run the tests many times
         for testname, testsrc in ase.fortran_test_generator().items():
-            results.append(ase.fortran_compiler_ok_sync(compiler, testname, testsrc))
+            results.append(ase.fortran_compiler_ok_sync(exe, testname, testsrc))
     results_sync = dict(results)
     toc = time.monotonic()
 
