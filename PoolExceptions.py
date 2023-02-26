@@ -7,7 +7,6 @@ https://docs.python.org/3/library/concurrent.futures.html
 
 import concurrent.futures
 from typing import Iterator
-import os
 
 
 def main(numbers) -> Iterator[int]:
@@ -16,7 +15,7 @@ def main(numbers) -> Iterator[int]:
     exception not thrown till iterator is iterated to the exception.
     """
 
-    with concurrent.futures.ThreadPoolExecutor(max_workers=os.cpu_count()) as executor:
+    with concurrent.futures.ThreadPoolExecutor() as executor:
         results = executor.map(timestwo, numbers, timeout=5)
 
     return results
