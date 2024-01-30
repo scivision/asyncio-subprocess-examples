@@ -1,9 +1,11 @@
 #!/usr/bin/env python3
 import sys
+from pathlib import Path
 import shutil
 import asyncio
 from argparse import ArgumentParser
 import time
+import tempfile
 
 import asyncio_subprocess_examples as ase
 
@@ -11,21 +13,29 @@ import asyncio_subprocess_examples as ase
 def main(name: str, Nrun: int, verbose: bool):
     if not (exe := shutil.which(name)):
         raise FileNotFoundError(name)
+
+    # %% write test files
+    temp_dir = tempfile.TemporaryDirectory(ignore_cleanup_errors=True)
+
+    src_files = ase.write_tests(Path(temp_dir.name))
+
     # %% asynch time
     tic = time.monotonic()
-    check_results = asyncio.run(ase.arbiter(exe, Nrun, verbose))
+    check_results = asyncio.run(ase.arbiter(exe, src_files, Nrun, verbose))
     toc = time.monotonic()
     print(f"{toc - tic:.3f} seconds to compile asyncio")
     # %% synch time
     tic = time.monotonic()
     results = []
     for _ in range(Nrun):  # just to run the tests many times
-        for testname, testsrc in ase.fortran_test_generator().items():
-            results.append(ase.fortran_compiler_ok_sync(exe, testname, testsrc))
+        for src_file in src_files:
+            results.append(ase.fortran_compiler_ok_sync(exe, src_file))
     results_sync = dict(results)
     toc = time.monotonic()
 
     print(f"{toc-tic:.3f} seconds to compile synchronous")
+
+    temp_dir.cleanup()
 
     assert results_sync == check_results
     # %% print test outcomes
