@@ -23,7 +23,7 @@ def main(compiler: str, Nrun: int, verbose: bool):
         if not (compiler_version := vs[0].strip()):
             compiler_version = vs[1].strip()
     except subprocess.CalledProcessError:
-        compiler_version = ""
+        compiler_version = compiler
 
     # %% write test files
     temp_dir = tempfile.TemporaryDirectory(ignore_cleanup_errors=True)
@@ -34,19 +34,19 @@ def main(compiler: str, Nrun: int, verbose: bool):
     tic = time.monotonic()
     results_asyncio = asyncio.run(ase.arbiter(exe, src_files, Nrun, verbose))
     toc = time.monotonic()
-    print(f"{toc - tic:.3f} seconds: asyncio: {compiler} {compiler_version}")
+    print(f"{toc - tic:.3f} seconds: asyncio: {compiler_version}")
 
     # %% ThreadPoolExecutor benchmark
     tic = time.monotonic()
     results_thread = ase.fortran_compiler_threadpool(exe, src_files, Nrun)
     toc = time.monotonic()
-    print(f"{toc - tic:.3f} seconds: ThreadPoolExecutor: {compiler} {compiler_version}")
+    print(f"{toc - tic:.3f} seconds: ThreadPoolExecutor: {compiler_version}")
 
     # %% ProcessPoolExecutor benchmark
     tic = time.monotonic()
     results_process = ase.fortran_compiler_processpool(exe, src_files, Nrun)
     toc = time.monotonic()
-    print(f"{toc - tic:.3f} seconds: ProcessPoolExecutor: {compiler} {compiler_version}")
+    print(f"{toc - tic:.3f} seconds: ProcessPoolExecutor: {compiler_version}")
 
     # %% serial benchmark
     tic = time.monotonic()
@@ -57,7 +57,7 @@ def main(compiler: str, Nrun: int, verbose: bool):
     results_sync = dict(results)
     toc = time.monotonic()
 
-    print(f"{toc - tic:.3f} seconds: serial: {compiler} {compiler_version}")
+    print(f"{toc - tic:.3f} seconds: serial: {compiler_version}")
 
     temp_dir.cleanup()
 
