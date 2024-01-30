@@ -19,9 +19,9 @@ def main(compiler: str, Nrun: int, verbose: bool):
         raise FileNotFoundError(compiler)
 
     try:
-        v = subprocess.check_output([exe, "--version"], text=True).split("\n")
-        if not (compiler_version := v[0].strip()):
-            compiler_version = v[1].strip()
+        vs = subprocess.check_output([exe, "--version"], text=True).split("\n")
+        if not (compiler_version := vs[0].strip()):
+            compiler_version = vs[1].strip()
     except subprocess.CalledProcessError:
         compiler_version = ""
 
@@ -42,6 +42,12 @@ def main(compiler: str, Nrun: int, verbose: bool):
     toc = time.monotonic()
     print(f"{toc - tic:.3f} seconds: ThreadPoolExecutor: {compiler} {compiler_version}")
 
+    # %% ProcessPoolExecutor benchmark
+    tic = time.monotonic()
+    results_process = ase.fortran_compiler_processpool(exe, src_files, Nrun)
+    toc = time.monotonic()
+    print(f"{toc - tic:.3f} seconds: ProcessPoolExecutor: {compiler} {compiler_version}")
+
     # %% serial benchmark
     tic = time.monotonic()
     results = []
@@ -55,6 +61,7 @@ def main(compiler: str, Nrun: int, verbose: bool):
 
     temp_dir.cleanup()
 
+    assert results_sync == results_process
     assert results_sync == results_thread
     assert results_sync == check_results
     # %% print test outcomes

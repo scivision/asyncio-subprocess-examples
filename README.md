@@ -3,7 +3,7 @@
 [![ci](https://github.com/scivision/asyncio-subprocess-examples/actions/workflows/ci.yml/badge.svg)](https://github.com/scivision/asyncio-subprocess-examples/actions/workflows/ci.yml)
 
 Examples of speedup from Python asyncio-subprocess and ThreadPoolExecutor.
-We observe asyncio is faster than ThreadPoolExecutor, including on a powerful Linux workstation:
+We observe asyncio is faster than ThreadPoolExecutor, which is faster than ProcessPoolExecutor, including on a powerful Linux workstation:
 
 ```sh
 $ python compiler_checks.py -n 8 gfortran
@@ -42,9 +42,10 @@ macOS Apple Silicon:
 
 Python 3.11.7 (main, Dec 15 2023, 12:09:56) [Clang 14.0.6 ] darwin
 
-1.348 seconds: asyncio: gfortran GNU Fortran (Homebrew GCC 13.2.0) 13.2.0
-1.395 seconds: ThreadPoolExecutor: gfortran GNU Fortran (Homebrew GCC 13.2.0) 13.2.0
-5.452 seconds: serial: gfortran GNU Fortran (Homebrew GCC 13.2.0) 13.2.0
+1.282 seconds: asyncio: gfortran GNU Fortran (Homebrew GCC 13.2.0) 13.2.0
+1.329 seconds: ThreadPoolExecutor: gfortran GNU Fortran (Homebrew GCC 13.2.0) 13.2.0
+2.330 seconds: ProcessPoolExecutor: gfortran GNU Fortran (Homebrew GCC 13.2.0) 13.2.0
+5.411 seconds: serial: gfortran GNU Fortran (Homebrew GCC 13.2.0) 13.2.0
 ```
 
 The first example is that of running compiler tests asynchronously, as would possibly be useful for build systems such as Meson.

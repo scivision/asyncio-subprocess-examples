@@ -91,13 +91,27 @@ def fortran_compiler_ok_sync(compiler: str, src_file: Path) -> tuple[str, bool]:
     return src_file.stem, ret.returncode == 0
 
 
-def fortran_compiler_threadpool(compiler: str, src_files: list[Path], Nrun: int):
+def fortran_compiler_threadpool(compiler: str, src_files: list[Path], Nrun: int) -> dict[str, bool]:
     """
     ThreadPool for parallel compilation
     """
 
     for _ in range(Nrun):  # just to run the tests many times
         with concurrent.futures.ThreadPoolExecutor() as executor:
+            results = executor.map(fortran_compiler_ok_sync, itertools.repeat(compiler), src_files)
+
+    return dict(results)
+
+
+def fortran_compiler_processpool(
+    compiler: str, src_files: list[Path], Nrun: int
+) -> dict[str, bool]:
+    """
+    ProcessPoolExecutor for parallel compilation
+    """
+
+    for _ in range(Nrun):  # just to run the tests many times
+        with concurrent.futures.ProcessPoolExecutor() as executor:
             results = executor.map(fortran_compiler_ok_sync, itertools.repeat(compiler), src_files)
 
     return dict(results)
