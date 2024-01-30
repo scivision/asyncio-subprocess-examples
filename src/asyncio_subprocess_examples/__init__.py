@@ -30,7 +30,6 @@ def fortran_test_generator() -> dict[str, str]:
 
 
 def write_tests(temp_dir: Path) -> list[Path]:
-
     tests = fortran_test_generator()
 
     src_files = []

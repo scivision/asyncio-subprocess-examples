@@ -6,13 +6,14 @@ import asyncio
 from argparse import ArgumentParser
 import time
 import tempfile
+import os
 
 import asyncio_subprocess_examples as ase
 
 
-def main(name: str, Nrun: int, verbose: bool):
-    if not (exe := shutil.which(name)):
-        raise FileNotFoundError(name)
+def main(compiler: str, Nrun: int, verbose: bool):
+    if not (exe := shutil.which(compiler)):
+        raise FileNotFoundError(compiler)
 
     # %% write test files
     temp_dir = tempfile.TemporaryDirectory(ignore_cleanup_errors=True)
@@ -23,7 +24,7 @@ def main(name: str, Nrun: int, verbose: bool):
     tic = time.monotonic()
     check_results = asyncio.run(ase.arbiter(exe, src_files, Nrun, verbose))
     toc = time.monotonic()
-    print(f"{toc - tic:.3f} seconds to compile asyncio")
+    print(f"{toc - tic:.3f} seconds to compile asyncio: {compiler}")
     # %% synch time
     tic = time.monotonic()
     results = []
@@ -33,7 +34,7 @@ def main(name: str, Nrun: int, verbose: bool):
     results_sync = dict(results)
     toc = time.monotonic()
 
-    print(f"{toc - tic:.3f} seconds to compile synchronous")
+    print(f"{toc - tic:.3f} seconds to compile synchronous: {compiler}")
 
     temp_dir.cleanup()
 
@@ -50,6 +51,8 @@ if __name__ == "__main__":
     p.add_argument(
         "compiler",
         help="name of compiler executable, e.g. flang gfortran ifx",
+        nargs="?",
+        default=os.getenv("FC", "gfortran"),
     )
     p.add_argument(
         "-n",

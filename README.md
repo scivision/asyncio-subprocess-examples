@@ -1,6 +1,6 @@
 # Python asyncio subprocess Examples
 
-![Actions Status](https://github.com/scivision/asyncio-subprocess-examples/workflows/ci/badge.svg)
+[![ci](https://github.com/scivision/asyncio-subprocess-examples/actions/workflows/ci.yml/badge.svg)](https://github.com/scivision/asyncio-subprocess-examples/actions/workflows/ci.yml)
 
 Examples of speedup from Python asyncio-subprocess.
 
