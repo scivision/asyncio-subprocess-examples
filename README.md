@@ -2,8 +2,17 @@
 
 [![ci](https://github.com/scivision/asyncio-subprocess-examples/actions/workflows/ci.yml/badge.svg)](https://github.com/scivision/asyncio-subprocess-examples/actions/workflows/ci.yml)
 
-Examples of speedup from Python asyncio-subprocess and ThreadPoolExecutor.
-We observe asyncio is faster than ThreadPoolExecutor, which is faster than ProcessPoolExecutor, including on a powerful Linux workstation:
+Examples of parallel compiler speedup from Python asyncio-subprocess, ThreadPoolExecutor, and ProcessPoolExecutor.
+We observe asyncio is faster than ThreadPoolExecutor, which is faster than ProcessPoolExecutor.
+
+These results may be useful for
+[Meson maintainers](https://github.com/mesonbuild/meson/issues/3635)
+and CMake maintainers to consider making some
+[CMake internals parallelized](https://gitlab.kitware.com/cmake/cmake/-/issues/25595).
+
+## Benchmarks
+
+Linux workstation:
 
 ```sh
 $ python compiler_checks.py -n 8 gfortran
@@ -50,14 +59,3 @@ Python 3.11.7 (main, Dec 15 2023, 12:09:56) [Clang 14.0.6 ] darwin
 2.330 seconds: ProcessPoolExecutor: GNU Fortran (Homebrew GCC 13.2.0) 13.2.0
 5.411 seconds: serial: GNU Fortran (Homebrew GCC 13.2.0) 13.2.0
 ```
-
-The first example is that of running compiler tests asynchronously, as would possibly be useful for build systems such as Meson.
-
-[compiler_checks.py](./complier_checks.py)
-
-* PC with two physical cores, this script runs at twice the speed of the synchronous (serial) iteration.
-* HPC with numerous physical cores, aysncio method runs at four times the speed of serial.
-
-It wasn't immediately clear why the HPC asyncio didn't run much faster than serial for loop.
-Was it an issue with the Python script or with some deadlock in the operating system involved in compilation. Hence the reason why we benchmark with an actual compilation task instead of `sleep`.
-This time ratio was roughly the same across Fortran compilers.
