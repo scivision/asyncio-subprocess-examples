@@ -13,6 +13,8 @@ import asyncio_subprocess_examples as ase
 
 
 def main(compiler: str, Nrun: int, verbose: bool):
+    print(f"Python {sys.version} {sys.platform}")
+
     if not (exe := shutil.which(compiler)):
         raise FileNotFoundError(compiler)
 

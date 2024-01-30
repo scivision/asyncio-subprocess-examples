@@ -26,6 +26,8 @@ macOS Apple Silicon:
 ```sh
 % python compiler_checks.py -n 8
 
+Python 3.11.7 (main, Dec 15 2023, 12:09:56) [Clang 14.0.6 ] darwin
+
 1.348 seconds: asyncio: gfortran GNU Fortran (Homebrew GCC 13.2.0) 13.2.0
 1.395 seconds: ThreadPoolExecutor: gfortran GNU Fortran (Homebrew GCC 13.2.0) 13.2.0
 5.452 seconds: serial: gfortran GNU Fortran (Homebrew GCC 13.2.0) 13.2.0
