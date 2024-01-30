@@ -2,9 +2,6 @@ name: ci
 
 on: [push, pull_request]
 
-env:
-  FC: gfortran-13
-
 jobs:
 
   core:
@@ -28,4 +25,12 @@ jobs:
     - run: flake8
     - run: mypy --install-types --non-interactive
 
-    - run: pytest
+    - name: Test Unix
+      if: runner.os != 'Windows'
+      run: pytest
+      env:
+        FC: gfortran-13
+
+    - name: Test Windows
+      if: runner.os == 'Windows'
+      run: pytest

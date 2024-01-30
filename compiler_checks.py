@@ -49,7 +49,7 @@ if __name__ == "__main__":
     p = ArgumentParser(description="demo of asyncio compiler checks")
     p.add_argument(
         "compiler",
-        help="name of compiler executable, e.g. clang gcc flang gfortran ifort",
+        help="name of compiler executable, e.g. flang gfortran ifx",
     )
     p.add_argument(
         "-n",
