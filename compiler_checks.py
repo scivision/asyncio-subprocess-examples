@@ -27,8 +27,7 @@ def main(name: str, Nrun: int, verbose: bool):
 
     print(f"{toc-tic:.3f} seconds to compile synchronous")
 
-    if sys.version_info >= (3, 6):
-        assert results_sync == check_results
+    assert results_sync == check_results
     # %% print test outcomes
     if Nrun == 1:
         for k, v in check_results.items():
