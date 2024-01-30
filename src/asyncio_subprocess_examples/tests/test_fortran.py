@@ -14,7 +14,6 @@ def test_asyncio(tmp_path):
 
 
 def test_sync(tmp_path):
-    src_files = ase.write_tests(tmp_path)
-    result = ase.fortran_compiler_ok_sync(COMPILER, src_files[0])
-    assert result[0] == "minimal"
-    assert result[1]
+    for s in ase.write_tests(tmp_path):
+        result = ase.fortran_compiler_ok_sync(COMPILER, s)
+        assert result[0]

@@ -38,7 +38,7 @@ end program"""
     return tests
 
 
-def write_tests(temp_dir: Path) -> list[Path]:
+def write_tests(temp_dir: Path) -> set[Path]:
     tests = fortran_test_generator()
 
     src_files = []
@@ -46,11 +46,11 @@ def write_tests(temp_dir: Path) -> list[Path]:
         src_files.append(temp_dir / (name + ".f90"))
         src_files[-1].write_text(src)
 
-    return src_files
+    return set(src_files)
 
 
 async def arbiter(
-    compiler: str, src_files: list[Path], Nrun: int, verbose: bool
+    compiler: str, src_files: set[Path], Nrun: int, verbose: bool
 ) -> dict[str, bool]:
     """
     example tests for compilers
@@ -98,7 +98,7 @@ def fortran_compiler_ok_sync(compiler: str, src_file: Path) -> tuple[str, bool]:
     return src_file.stem, ret.returncode == 0
 
 
-def fortran_compiler_threadpool(compiler: str, src_files: list[Path], Nrun: int) -> dict[str, bool]:
+def fortran_compiler_threadpool(compiler: str, src_files: set[Path], Nrun: int) -> dict[str, bool]:
     """
     ThreadPool for parallel compilation
     """
@@ -111,7 +111,7 @@ def fortran_compiler_threadpool(compiler: str, src_files: list[Path], Nrun: int)
 
 
 def fortran_compiler_processpool(
-    compiler: str, src_files: list[Path], Nrun: int
+    compiler: str, src_files: set[Path], Nrun: int
 ) -> dict[str, bool]:
     """
     ProcessPoolExecutor for parallel compilation
