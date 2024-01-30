@@ -6,19 +6,33 @@ Examples of speedup from Python asyncio-subprocess and ThreadPoolExecutor.
 We observe asyncio is faster than ThreadPoolExecutor, including on a powerful Linux workstation:
 
 ```sh
-$ python compiler_checks.py -n 16 gfortran
+$ python compiler_checks.py -n 8 gfortran
 
-0.320 seconds: asyncio: gfortran
-0.808 seconds: ThreadPoolExecutor: gfortran
-6.813 seconds: serial: gfortran
+Python 3.11.7 (main, Dec 15 2023, 18:12:31) [GCC 11.2.0] linux
+
+0.175 seconds: asyncio: gfortran GNU Fortran (GCC) 11.4.1 20231218 (Red Hat 11.4.1-3)
+0.432 seconds: ThreadPoolExecutor: gfortran GNU Fortran (GCC) 11.4.1 20231218 (Red Hat 11.4.1-3)
+3.637 seconds: serial: gfortran GNU Fortran (GCC) 11.4.1 20231218 (Red Hat 11.4.1-3)
 ```
 
 ```sh
-$ python compiler_checks.py -n 16 ifx
+python compiler_checks.py -n 8 ifx
 
-0.532 seconds: asyncio: ifx
-1.760 seconds: ThreadPoolExecutor: ifx
-14.147 seconds: serial: ifx
+Python 3.11.7 (main, Dec 15 2023, 18:12:31) [GCC 11.2.0] linux
+
+0.307 seconds: asyncio: ifx ifx (IFX) 2024.0.0 20231017
+0.878 seconds: ThreadPoolExecutor: ifx ifx (IFX) 2024.0.0 20231017
+7.086 seconds: serial: ifx ifx (IFX) 2024.0.0 20231017
+```
+
+```sh
+$ python compiler_checks.py -n 8 nvfortran
+
+Python 3.11.7 (main, Dec 15 2023, 18:12:31) [GCC 11.2.0] linux
+
+0.318 seconds: asyncio: nvfortran nvfortran 23.11-0 64-bit
+1.040 seconds: ThreadPoolExecutor: nvfortran nvfortran 23.11-0
+7.071 seconds: serial: nvfortran nvfortran 23.11-0
 ```
 
 macOS Apple Silicon:

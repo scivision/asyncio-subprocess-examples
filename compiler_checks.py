@@ -19,9 +19,9 @@ def main(compiler: str, Nrun: int, verbose: bool):
         raise FileNotFoundError(compiler)
 
     try:
-        compiler_version = subprocess.check_output([exe, "--version"], text=True).split(
-            "\n", maxsplit=1
-        )[0]
+        v = subprocess.check_output([exe, "--version"], text=True).split("\n")
+        if not (compiler_version := v[0].strip()):
+            compiler_version = v[1].strip()
     except subprocess.CalledProcessError:
         compiler_version = ""
 
