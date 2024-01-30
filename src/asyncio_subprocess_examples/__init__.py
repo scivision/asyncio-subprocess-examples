@@ -16,13 +16,17 @@ def fortran_test_generator() -> dict[str, str]:
 
     tests = {
         "minimal": "end",
+        "f2003ieee": "use, intrinsic :: ieee_arithmetic; print *, ieee_next_after(0.,0.); end",
+        "f2003utf8": "use, intrinsic :: ieee_arithmetic, only ; print *, ieee_next_after(0.,0.), end",
         "f2008rank15": "integer :: a(1,1,1,1,1,1,1,1,1,1,1,1,1,1,1); print*,rank(a);end",
         "f2008contiguous": "print*,is_contiguous([0,0]); end",
         "f2018errorstop": "character :: a; error stop a; end",
+        "f2008kind": "use, intrinsic :: iso_fortran_env; print *, huge(0._real128); end",
         "f2008version": "use, intrinsic :: iso_fortran_env; print *, compiler_version(); end",
         "f2008block": "block; a=0.; end block; end",
         "f2018randominit": "call random_init(.false., .false.); end",
         "f2018properties": "complex :: z; print *,z%re,z%im,z%kind; end",
+        "2023rank": "real, rank(2) :: a; end"
     }
 
     return tests
