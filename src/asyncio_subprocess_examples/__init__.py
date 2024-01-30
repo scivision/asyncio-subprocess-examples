@@ -2,6 +2,8 @@ from pathlib import Path
 import asyncio
 import subprocess
 import sys
+import concurrent.futures
+import itertools
 
 __version__ = "1.2.0"
 
@@ -87,3 +89,15 @@ def fortran_compiler_ok_sync(compiler: str, src_file: Path) -> tuple[str, bool]:
     ret = subprocess.run([compiler, str(src_file)], stderr=subprocess.DEVNULL)
 
     return src_file.stem, ret.returncode == 0
+
+
+def fortran_compiler_threadpool(compiler: str, src_files: list[Path], Nrun: int):
+    """
+    ThreadPool for parallel compilation
+    """
+
+    for _ in range(Nrun):  # just to run the tests many times
+        with concurrent.futures.ThreadPoolExecutor() as executor:
+            results = executor.map(fortran_compiler_ok_sync, itertools.repeat(compiler), src_files)
+
+    return dict(results)

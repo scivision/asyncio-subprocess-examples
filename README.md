@@ -2,7 +2,8 @@
 
 [![ci](https://github.com/scivision/asyncio-subprocess-examples/actions/workflows/ci.yml/badge.svg)](https://github.com/scivision/asyncio-subprocess-examples/actions/workflows/ci.yml)
 
-Examples of speedup from Python asyncio-subprocess.
+Examples of speedup from Python asyncio-subprocess and ThreadPoolExecutor.
+We observe ThreadPoolExecutor is only slightly slower than asyncio.
 
 The first example is that of running compiler tests asynchronously, as would possibly be useful for build systems such as Meson.
 

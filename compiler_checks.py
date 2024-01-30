@@ -20,12 +20,19 @@ def main(compiler: str, Nrun: int, verbose: bool):
 
     src_files = ase.write_tests(Path(temp_dir.name))
 
-    # %% asynch time
+    # %% asyncio benchmark
     tic = time.monotonic()
     check_results = asyncio.run(ase.arbiter(exe, src_files, Nrun, verbose))
     toc = time.monotonic()
-    print(f"{toc - tic:.3f} seconds to compile asyncio: {compiler}")
-    # %% synch time
+    print(f"{toc - tic:.3f} seconds: asyncio: {compiler}")
+
+    # %% ThreadPoolExecutor benchmark
+    tic = time.monotonic()
+    results_thread = ase.fortran_compiler_threadpool(exe, src_files, Nrun)
+    toc = time.monotonic()
+    print(f"{toc - tic:.3f} seconds: ThreadPoolExecutor: {compiler}")
+
+    # %% serial benchmark
     tic = time.monotonic()
     results = []
     for _ in range(Nrun):  # just to run the tests many times
@@ -34,10 +41,11 @@ def main(compiler: str, Nrun: int, verbose: bool):
     results_sync = dict(results)
     toc = time.monotonic()
 
-    print(f"{toc - tic:.3f} seconds to compile synchronous: {compiler}")
+    print(f"{toc - tic:.3f} seconds: serial: {compiler}")
 
     temp_dir.cleanup()
 
+    assert results_sync == results_thread
     assert results_sync == check_results
     # %% print test outcomes
     if Nrun == 1:
