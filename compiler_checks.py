@@ -7,6 +7,7 @@ from argparse import ArgumentParser
 import time
 import tempfile
 import os
+import subprocess
 
 import asyncio_subprocess_examples as ase
 
@@ -14,6 +15,13 @@ import asyncio_subprocess_examples as ase
 def main(compiler: str, Nrun: int, verbose: bool):
     if not (exe := shutil.which(compiler)):
         raise FileNotFoundError(compiler)
+
+    try:
+        compiler_version = subprocess.check_output([exe, "--version"], text=True).split(
+            "\n", maxsplit=1
+        )[0]
+    except subprocess.CalledProcessError:
+        compiler_version = ""
 
     # %% write test files
     temp_dir = tempfile.TemporaryDirectory(ignore_cleanup_errors=True)
@@ -24,13 +32,13 @@ def main(compiler: str, Nrun: int, verbose: bool):
     tic = time.monotonic()
     check_results = asyncio.run(ase.arbiter(exe, src_files, Nrun, verbose))
     toc = time.monotonic()
-    print(f"{toc - tic:.3f} seconds: asyncio: {compiler}")
+    print(f"{toc - tic:.3f} seconds: asyncio: {compiler} {compiler_version}")
 
     # %% ThreadPoolExecutor benchmark
     tic = time.monotonic()
     results_thread = ase.fortran_compiler_threadpool(exe, src_files, Nrun)
     toc = time.monotonic()
-    print(f"{toc - tic:.3f} seconds: ThreadPoolExecutor: {compiler}")
+    print(f"{toc - tic:.3f} seconds: ThreadPoolExecutor: {compiler} {compiler_version}")
 
     # %% serial benchmark
     tic = time.monotonic()
@@ -41,7 +49,7 @@ def main(compiler: str, Nrun: int, verbose: bool):
     results_sync = dict(results)
     toc = time.monotonic()
 
-    print(f"{toc - tic:.3f} seconds: serial: {compiler}")
+    print(f"{toc - tic:.3f} seconds: serial: {compiler} {compiler_version}")
 
     temp_dir.cleanup()
 
