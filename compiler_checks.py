@@ -32,7 +32,7 @@ def main(compiler: str, Nrun: int, verbose: bool):
 
     # %% asyncio benchmark
     tic = time.monotonic()
-    check_results = asyncio.run(ase.arbiter(exe, src_files, Nrun, verbose))
+    results_asyncio = asyncio.run(ase.arbiter(exe, src_files, Nrun, verbose))
     toc = time.monotonic()
     print(f"{toc - tic:.3f} seconds: asyncio: {compiler} {compiler_version}")
 
@@ -63,10 +63,10 @@ def main(compiler: str, Nrun: int, verbose: bool):
 
     assert results_sync == results_process
     assert results_sync == results_thread
-    assert results_sync == check_results
+    assert results_sync == results_asyncio
     # %% print test outcomes
     if Nrun == 1:
-        for k, v in check_results.items():
+        for k, v in results_sync.items():
             if not v:
                 print(k, "failed", file=sys.stderr)
 

@@ -10,19 +10,21 @@ $ python compiler_checks.py -n 8 gfortran
 
 Python 3.11.7 (main, Dec 15 2023, 18:12:31) [GCC 11.2.0] linux
 
-0.175 seconds: asyncio: gfortran GNU Fortran (GCC) 11.4.1 20231218 (Red Hat 11.4.1-3)
-0.432 seconds: ThreadPoolExecutor: gfortran GNU Fortran (GCC) 11.4.1 20231218 (Red Hat 11.4.1-3)
-3.637 seconds: serial: gfortran GNU Fortran (GCC) 11.4.1 20231218 (Red Hat 11.4.1-3)
+0.174 seconds: asyncio: gfortran GNU Fortran (GCC) 11.4.1 20231218 (Red Hat 11.4.1-3)
+0.427 seconds: ThreadPoolExecutor: gfortran GNU Fortran (GCC) 11.4.1 20231218 (Red Hat 11.4.1-3)
+1.065 seconds: ProcessPoolExecutor: gfortran GNU Fortran (GCC) 11.4.1 20231218 (Red Hat 11.4.1-3)
+3.630 seconds: serial: gfortran GNU Fortran (GCC) 11.4.1 20231218 (Red Hat 11.4.1-3)
 ```
 
 ```sh
-python compiler_checks.py -n 8 ifx
+$ python compiler_checks.py -n 8 ifx
 
 Python 3.11.7 (main, Dec 15 2023, 18:12:31) [GCC 11.2.0] linux
 
-0.307 seconds: asyncio: ifx ifx (IFX) 2024.0.0 20231017
-0.878 seconds: ThreadPoolExecutor: ifx ifx (IFX) 2024.0.0 20231017
-7.086 seconds: serial: ifx ifx (IFX) 2024.0.0 20231017
+0.306 seconds: asyncio: ifx ifx (IFX) 2024.0.0 20231017
+0.876 seconds: ThreadPoolExecutor: ifx ifx (IFX) 2024.0.0 20231017
+1.551 seconds: ProcessPoolExecutor: ifx ifx (IFX) 2024.0.0 20231017
+6.870 seconds: serial: ifx ifx (IFX) 2024.0.0 20231017
 ```
 
 ```sh
@@ -30,9 +32,10 @@ $ python compiler_checks.py -n 8 nvfortran
 
 Python 3.11.7 (main, Dec 15 2023, 18:12:31) [GCC 11.2.0] linux
 
-0.318 seconds: asyncio: nvfortran nvfortran 23.11-0 64-bit
-1.040 seconds: ThreadPoolExecutor: nvfortran nvfortran 23.11-0
-7.071 seconds: serial: nvfortran nvfortran 23.11-0
+0.320 seconds: asyncio: nvfortran nvfortran 23.11-0
+1.056 seconds: ThreadPoolExecutor: nvfortran nvfortran 23.11-0
+1.653 seconds: ProcessPoolExecutor: nvfortran nvfortran 23.11-0
+7.036 seconds: serial: nvfortran nvfortran 23.11-0
 ```
 
 macOS Apple Silicon:

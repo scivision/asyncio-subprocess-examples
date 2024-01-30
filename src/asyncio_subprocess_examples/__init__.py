@@ -25,7 +25,10 @@ def fortran_test_generator() -> dict[str, str]:
         "f2008block": "block; a=0.; end block; end",
         "f2018randominit": "call random_init(.false., .false.); end",
         "f2018properties": "complex :: z; print *,z%re,z%im,z%kind; end",
-        "2023rank": "real, rank(2) :: a; end",
+        "f2023rank": "real, rank(2) :: a; end",
+        "f2023real16": "use, intrinsic :: iso_fortran_env, only: real16; end",
+        "f2023ternary": "real :: a, v; v = ( a > 0.0 ? a : 0.0); end",
+        "f2023tokenize": "intrinsic :: tokenize; end"
     }
 
     return tests
