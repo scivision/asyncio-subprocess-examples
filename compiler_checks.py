@@ -33,7 +33,7 @@ def main(name: str, Nrun: int, verbose: bool):
     results_sync = dict(results)
     toc = time.monotonic()
 
-    print(f"{toc-tic:.3f} seconds to compile synchronous")
+    print(f"{toc - tic:.3f} seconds to compile synchronous")
 
     temp_dir.cleanup()
 
